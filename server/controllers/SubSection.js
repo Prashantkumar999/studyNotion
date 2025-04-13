@@ -57,4 +57,41 @@ export const createSubSection = async (req, res) => {
 //update subSection
 
 
+
 //delete subSection
+
+export const deleteSubSection = async (req, res) => {
+    try {
+        const { subSectionId, sectionId } = req.body
+
+        if (!subSectionId || !sectionId) {
+            return res.status(400).json({
+                success: false,
+                message: "sectionId and subSectionId are required"
+            })
+        }
+
+        // delete subSection 
+        await SubSection.findByIdAndDelete(subSectionId)
+
+        // delete from section 
+        const updatedSection = await Section.findByIdAndUpdate(sectionId, {
+            $pull: {
+                subSection: subSectionId
+            }
+        }, { new: true })
+
+        // return response with updated section 
+
+        return res.status(200).json({
+            success: true,
+            message: "sub-section deleted successfully",
+            updatedSection
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "something went wrong while deleting the sub-section please try again later"
+        })
+    }
+}
