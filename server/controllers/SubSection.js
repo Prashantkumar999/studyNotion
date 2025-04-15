@@ -55,7 +55,49 @@ export const createSubSection = async (req, res) => {
 }
 
 //update subSection
+// i will complete it later cause i have some questions
 
+export const updateSubSection = async (req, res) => {
+    try {
+        //get data
+        const { subSectionId, title, timeDuration, description } = req.body
+        //validation
+        if (!subSectionId) {
+            return res.status(404).json({
+                success: false,
+                message: "sub-section not found"
+            })
+        }
+        const updates = {};
+        if (title) updates.title = title;
+        if (timeDuration) updates.timeDuration = timeDuration;
+        if (description) updates.description = description;
+
+        // If new video is uploaded
+
+        if (req.files && req.files.videoFile) {
+            const video = req.files.videoFile;
+            const uploadedVideo = await uploadMediaToCloudinary(video, process.env.FOLDER_NAME);
+            updates.videoUrl = uploadedVideo.secure_url;
+        }
+        // Update subsection
+        const updatedSubSection = await SubSection.findByIdAndUpdate(subSectionId, updates, {
+            new: true,
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Sub-section updated successfully",
+            data: updatedSubSection,
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "something went wrong while updating the sub-section"
+        })
+    }
+}
 
 
 //delete subSection
