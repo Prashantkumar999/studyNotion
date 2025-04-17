@@ -1,6 +1,6 @@
 import Tag from "../models/Tags";
 
-//create tag handler function 
+//create category handler function 
 
 export const createTag = async (req, res) => {
     try {
@@ -39,7 +39,7 @@ export const showAllTags = async (req, res) => {
         const allTags = await Tag.find({}, { name: true, description: true })
         return res.status(200).json({
             success: true,
-        wdaw    message: "all tags fetched successfully",
+            message: "all tags fetched successfully",
             allTags
         })
 
