@@ -1,8 +1,8 @@
-import Tag from "../models/Tags";
+import Category from "../models/Category";
 
 //create category handler function 
 
-export const createTag = async (req, res) => {
+export const createCategory = async (req, res) => {
     try {
         //get data...title and description 
         const { name, description } = req.body
@@ -20,7 +20,7 @@ export const createTag = async (req, res) => {
         //return response
         return res.status(200).json({
             success: false,
-            message: "tag created successfully"
+            message: "category created successfully"
         })
 
     } catch (error) {
@@ -34,12 +34,12 @@ export const createTag = async (req, res) => {
 
 //get all tags handler function 
 
-export const showAllTags = async (req, res) => {
+export const showAllCategory = async (req, res) => {
     try {
         const allTags = await Tag.find({}, { name: true, description: true })
         return res.status(200).json({
             success: true,
-            message: "all tags fetched successfully",
+            message: "all category fetched successfully",
             allTags
         })
 
